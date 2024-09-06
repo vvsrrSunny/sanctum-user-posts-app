@@ -12,6 +12,6 @@ class LogoutController extends Controller
     {
         Auth::user()->currentAccessToken()->delete();
 
-        return response()->json([]);
+        return response()->json(['message'=> 'User logged out successfully']);
     }
 }

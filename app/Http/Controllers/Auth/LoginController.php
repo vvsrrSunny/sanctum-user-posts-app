@@ -20,6 +20,6 @@ class LoginController extends Controller
         // Return success response with the user data and token
         $token = Auth::user()->createToken('login_token')->plainTextToken;
 
-        return response()->json(['user' => Auth::user(), 'token' => $token]);
+        return response()->json(['message'=> 'User login successfully', 'user' => Auth::user(), 'token' => $token]);
     }
 }
