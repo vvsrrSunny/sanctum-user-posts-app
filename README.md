@@ -3,9 +3,9 @@
 * [Technologies](#technologies)
 * [Prerequisites](#prerequisites)
 * [Setup](#setup)
-* [Commands](#commands)
-* [APIs](#apis)
-
+* [API Documentation](#api-documentation)
+* [Artisan Commands](#artisan-commands)
+* [Testing](#testing)
 ## General info
 This project offers Sanctum authentication for user registration, login, and logout. It applies various levels of authorization on users' CRUD operations for posts through post policies. Upon successful registration, a welcome email is dispatched to the user. Additionally, the app includes a custom Artisan command to queue the welcome email. A few test cases are also provided to ensure the functionality of the application.  
 	
@@ -54,16 +54,103 @@ php artisan queue:work
 ```
 php artisan serve
 ```
-Your application is ready to use!
+Your application setup is done!
 
-## Commands
-* There are main commands we believe could be used more 
-* Custom command to send the email to the user 
+## API Documentation
+
+This project provides a RESTful API with Sanctum authentication for user registration, login, and logout. Below are the available API routes and their corresponding descriptions:
+
+### Post Routes
+
+1. **List All Posts**
+   - **Endpoint:** `GET /api/posts`
+   - **Description:** Retrieves a list of all posts.
+   - **Authentication:** Required
+
+2. **Get a Specific Post**
+   - **Endpoint:** `GET /api/posts/{id}`
+   - **Description:** Retrieves details of a specific post by its ID.
+   - **Authentication:** Required
+
+3. **Create a New Post**
+   - **Endpoint:** `POST /api/posts`
+   - **Description:** Creates a new post.
+   - **Authentication:** Required
+   - **Validation:**
+     ```json
+     {
+         "title": "required|string|min:3",
+         "content": "required|string|max:6000"
+     }
+     ```
+
+4. **Update an Existing Post**
+   - **Endpoint:** `PATCH /api/posts/{id}`
+   - **Description:** Updates an existing post by its ID.
+   - **Authentication:** Required
+   - **Validation:**
+     ```json
+     {
+         "title": "required|string|min:3",
+         "content": "required|string|max:6000"
+     }
+     ```
+
+5. **Delete a Post**
+   - **Endpoint:** `DELETE /api/posts/{id}`
+   - **Description:** Deletes a post by its ID.
+   - **Authentication:** Required
+
+### User Routes
+
+6. **Get a Specific User**
+   - **Endpoint:** `GET /api/users/{id}`
+   - **Description:** Retrieves details of a specific user by their ID.
+   - **Authentication:** Required
+
+7. **Register a New User**
+   - **Endpoint:** `POST /api/register`
+   - **Description:** Registers a new user.
+   - **Validation:**
+     ```json
+     {
+         "name": "required|string|max:255",
+         "email": "required|string|email|max:255|unique:users",
+         "password": "required|string|min:8|confirmed"
+     }
+     ```
+
+8. **Login a User**
+   - **Endpoint:** `POST /api/login`
+   - **Description:** Authenticates a user and returns a token.
+   - **Validation:**
+     ```json
+     {
+         "email": "required|string|email|max:255|exists:users",
+         "password": "required|string|min:8"
+     }
+     ```
+
+9. **Logout a User**
+   - **Endpoint:** `POST /api/logout`
+   - **Description:** Logs out the authenticated user.
+   - **Authentication:** Required
+
+### Authentication & Authorization
+
+- **Sanctum Authentication:** The API uses Laravel Sanctum for authentication. Routes under the `/api/posts` and `/api/users` endpoints are protected and require the user to be authenticated.
+- **Authorization:** Post-related actions (CRUD) are managed by post policies that enforce various levels of user authorization.
+
+### Artisan Commands
+
+- **Queue Welcome Email:**
 ```
 php artisan mail:welcome {user_id}
 ```
-* Command to run the test all the test cases
+
+### Testing
+
+- A few test cases are included in the project to validate the core functionalities.
 ```
 ./vendor/bin/pest 
 ```
-## APIs
