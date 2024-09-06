@@ -9,6 +9,6 @@ class UserController extends Controller
 {
     public function show(User $user): JsonResponse
     {
-        return response()->json(['message'=> 'User record found', 'user' => $user]);
+        return response()->json(['message' => 'User record found', 'user' => $user]);
     }
 }

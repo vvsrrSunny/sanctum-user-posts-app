@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(['message'=> 'List of all posts', 'posts' => Post::all()]);
+        return response()->json(['message' => 'List of all posts', 'posts' => Post::all()]);
     }
 
     /**
@@ -24,7 +24,7 @@ class PostController extends Controller
     public function store(PostRequest $request): JsonResponse
     {
         $post = Auth::user()->posts()->create($request->all());
-        return response()->json(['message'=> 'post created successfully', 'post' => $post]);
+        return response()->json(['message' => 'post created successfully', 'post' => $post]);
     }
 
     /**
@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        return response()->json(['message'=> 'Post found', 'post' => $post]);
+        return response()->json(['message' => 'Post found', 'post' => $post]);
     }
 
     /**
@@ -40,9 +40,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post): JsonResponse
     {
+        Gate::authorize('update', $post);
+
         $post = $post->update($request->all());
 
-        return response()->json(['message'=> 'Post updated successfully', 'post' => $post]);
+        return response()->json(['message' => 'Post updated successfully', 'post' => $post]);
     }
 
     /**
@@ -50,8 +52,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post): JsonResponse
     {
+        Gate::authorize('update', $post);
+
         $post = $post->delete();
 
-        return response()->json(['message'=> 'Post deleted successfully', 'post' => $post]);
+        return response()->json(['message' => 'Post deleted successfully', 'post' => $post]);
     }
 }
