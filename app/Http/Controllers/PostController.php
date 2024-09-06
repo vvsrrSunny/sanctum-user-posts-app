@@ -53,7 +53,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post): JsonResponse
     {
-        Gate::authorize('update', $post);
+        Gate::authorize('delete', $post);
 
         $post = $post->delete();
 
